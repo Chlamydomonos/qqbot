@@ -5,7 +5,7 @@ services:
         build: ./mcl
         volumes:
             - ./mcl/logs:/mcl/logs
-        command: ['java', '-jar', './mcl.jar']
+        command: [ 'java', '-jar', './mcl.jar' ]
         expose:
             - 8765
         networks:
@@ -13,9 +13,11 @@ services:
     connector:
         container_name: connector
         build: ./custom/connector
-        command: ['node', './main.js']
+        command: [ 'node', './main.js' ]
         networks:
             - mirai_net
+        depends_on:
+            - mcl
 
 networks:
     mirai_net:
