@@ -1,12 +1,20 @@
-import type { Event } from '../../event';
+import type { Event } from '../event';
 
 const HOST = 'mcl';
 const PORT = '8765';
 const VERIFY_KEY = 'CHLAMYDOMONOS';
 const QQ = '2472884021';
 
+export interface WsConnectSuccess {
+    syncId: '';
+    data: {
+        code: number;
+        session?: string;
+    };
+}
+
 export interface WsEvent {
-    syncId: number;
+    syncId: '-1';
     data: Event;
 }
 
