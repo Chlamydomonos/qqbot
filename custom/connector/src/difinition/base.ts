@@ -1,4 +1,4 @@
-import { MsgChainObj } from '.';
+import type { MsgChainObj } from '.';
 
 export interface MsgChainObjBase {
     type: string;

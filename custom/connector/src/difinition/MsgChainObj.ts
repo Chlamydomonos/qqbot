@@ -1,5 +1,5 @@
-import { MsgChainObjBase } from './base';
-import { MsgChainObj } from '.';
+import type { MsgChainObj } from '.';
+import type { MsgChainObjBase } from './base';
 
 export interface MsgSource extends MsgChainObjBase {
     type: 'Source';

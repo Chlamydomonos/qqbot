@@ -1,5 +1,5 @@
-import { MessageBase } from './base';
-import { GroupMember, User } from './utils';
+import type { MessageBase } from './base';
+import type { Client, GroupMember, User } from './utils';
 
 export interface FriendMessage extends MessageBase {
     type: 'FriendMessage';
@@ -23,8 +23,5 @@ export interface StrangerMessage extends MessageBase {
 
 export interface OtherClientMessage extends MessageBase {
     type: 'OtherClientMessage';
-    sender: {
-        id: number;
-        platform: string;
-    };
+    sender: Client;
 }

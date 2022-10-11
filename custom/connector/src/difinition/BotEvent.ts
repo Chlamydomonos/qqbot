@@ -1,4 +1,4 @@
-import { BotEventBase } from './base';
+import type { BotEventBase } from './base';
 
 export interface BotOnlineEvent extends BotEventBase {
     type: 'BotOnlineEvent';

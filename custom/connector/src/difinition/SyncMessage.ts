@@ -1,5 +1,5 @@
-import { MessageBase } from './base';
-import { Group, GroupMember, User } from './utils';
+import type { MessageBase } from './base';
+import type { Group, GroupMember, User } from './utils';
 
 export interface FriendSyncMessage extends MessageBase {
     type: 'FriendSyncMessage';
