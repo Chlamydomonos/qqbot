@@ -1,6 +1,12 @@
 {
-  "dependencies": {
-    "prettier": "^2.7.1",
-    "typescript": "^4.8.4"
-  }
+    "dependencies": {
+        "@types/websocket": "^1.0.5",
+        "prettier": "^2.7.1",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.8.4",
+        "websocket": "^1.0.34"
+    },
+    "scripts": {
+        "build": "rimraf ./dist && tsc"
+    }
 }
