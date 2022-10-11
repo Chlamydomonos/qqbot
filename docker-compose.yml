@@ -1,0 +1,16 @@
+version: '3'
+services:
+    mcl:
+        container_name: mcl
+        build: ./mcl
+        volumes:
+            - ./mcl/logs:/mcl/logs
+        command: ['java', '-jar', '/mcl/mcl.jar']
+        expose:
+            - 8080
+        networks:
+            - mirai_net
+
+networks:
+    mirai_net:
+        driver: bridge
