@@ -1,0 +1,7 @@
+*
+!*/
+!.gitignore
+!/bots/**/*
+!/config/**/*
+!/config.json
+*.log
