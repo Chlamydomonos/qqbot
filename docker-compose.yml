@@ -5,9 +5,15 @@ services:
         build: ./mcl
         volumes:
             - ./mcl/logs:/mcl/logs
-        command: ['java', '-jar', '/mcl/mcl.jar']
+        command: ['java', '-jar', './mcl.jar']
         expose:
-            - 8080
+            - 8765
+        networks:
+            - mirai_net
+    connector:
+        container_name: connector
+        build: ./custom/connector
+        command: ['node', './main.js']
         networks:
             - mirai_net
 
