@@ -8,20 +8,14 @@ export interface MuteReq extends SessionReqBase {
     time?: number;
 }
 
-export interface Mute extends ReqResBase<MuteReq, ResponseBase> {
-    path: '/mute';
-    method: 'POST';
-}
+export interface Mute extends ReqResBase<MuteReq, ResponseBase> {}
 
 export interface UnmuteReq extends SessionReqBase {
     target: number;
     memberId: number;
 }
 
-export interface Unmute extends ReqResBase<UnmuteReq, ResponseBase> {
-    path: '/unmute';
-    method: 'POST';
-}
+export interface Unmute extends ReqResBase<UnmuteReq, ResponseBase> {}
 
 export interface KickReq extends SessionReqBase {
     target: number;
@@ -29,53 +23,35 @@ export interface KickReq extends SessionReqBase {
     msg?: string;
 }
 
-export interface Kick extends ReqResBase<KickReq, ResponseBase> {
-    path: '/kick';
-    method: 'POST';
-}
+export interface Kick extends ReqResBase<KickReq, ResponseBase> {}
 
 export interface QuitReq extends SessionReqBase {
     target: number;
 }
 
-export interface Quit extends ReqResBase<QuitReq, ResponseBase> {
-    path: '/quit';
-    method: 'POST';
-}
+export interface Quit extends ReqResBase<QuitReq, ResponseBase> {}
 
 export interface MuteAllReq extends SessionReqBase {
     target: number;
 }
 
-export interface MuteAll extends ReqResBase<MuteAllReq, ResponseBase> {
-    path: '/muteAll';
-    method: 'POST';
-}
+export interface MuteAll extends ReqResBase<MuteAllReq, ResponseBase> {}
 
-export interface UnmuteAll extends ReqResBase<MuteAllReq, ResponseBase> {
-    path: '/unmuteAll';
-    method: 'POST';
-}
+export interface UnmuteAll extends ReqResBase<MuteAllReq, ResponseBase> {}
 
 export interface SetEssenceReq extends SessionReqBase {
     messageId: number;
     target: number;
 }
 
-export interface SetEssence extends ReqResBase<SetEssenceReq, ResponseBase> {
-    path: '/setEssence';
-    method: 'POST';
-}
+export interface SetEssence extends ReqResBase<SetEssenceReq, ResponseBase> {}
 
 export interface GetGroupConfigReq extends SessionReqBase {
     target: number;
 }
 
 export interface GetGroupConfig
-    extends ReqResBase<GetGroupConfigReq, GroupConfig> {
-    path: '/groupConfig';
-    method: 'GET';
-}
+    extends ReqResBase<GetGroupConfigReq, GroupConfig> {}
 
 export interface PostGroupConfigReq extends SessionReqBase {
     target: number;
@@ -83,10 +59,7 @@ export interface PostGroupConfigReq extends SessionReqBase {
 }
 
 export interface PostGroupConfig
-    extends ReqResBase<PostGroupConfigReq, ResponseBase> {
-    path: '/groupConfig';
-    method: 'POST';
-}
+    extends ReqResBase<PostGroupConfigReq, ResponseBase> {}
 
 export interface GetMemberInfoReq extends SessionReqBase {
     target: number;
@@ -105,10 +78,7 @@ export interface GetMemberInfoRes {
 }
 
 export interface GetMemberInfo
-    extends ReqResBase<GetMemberInfoReq, GetMemberInfoRes> {
-    path: '/memberInfo';
-    method: 'GET';
-}
+    extends ReqResBase<GetMemberInfoReq, GetMemberInfoRes> {}
 
 export interface PostMemberInfoReq extends SessionReqBase {
     target: number;
@@ -120,10 +90,7 @@ export interface PostMemberInfoReq extends SessionReqBase {
 }
 
 export interface PostMemberInfo
-    extends ReqResBase<PostMemberInfoReq, ResponseBase> {
-    path: '/memberInfo';
-    method: 'POST';
-}
+    extends ReqResBase<PostMemberInfoReq, ResponseBase> {}
 
 export interface MemberAdminReq extends SessionReqBase {
     target: number;
@@ -131,10 +98,7 @@ export interface MemberAdminReq extends SessionReqBase {
     assign: boolean;
 }
 
-export interface MemberAdmin extends ReqResBase<MemberAdminReq, ResponseBase> {
-    path: '/memberAdmin';
-    method: 'POST';
-}
+export interface MemberAdmin extends ReqResBase<MemberAdminReq, ResponseBase> {}
 
 export interface AnnoListReq extends SessionReqBase {
     id: number;
@@ -146,10 +110,7 @@ export interface AnnoListRes extends ResponseBase {
     data: Anno[];
 }
 
-export interface AnnoList extends ReqResBase<AnnoListReq, AnnoListRes> {
-    path: '/anno/list';
-    method: 'GET';
-}
+export interface AnnoList extends ReqResBase<AnnoListReq, AnnoListRes> {}
 
 export interface AnnoPublishReq extends SessionReqBase {
     target: number;
@@ -169,17 +130,11 @@ export interface AnnoPublishRes extends ResponseBase {
 }
 
 export interface AnnoPublish
-    extends ReqResBase<AnnoPublishReq, AnnoPublishRes> {
-    path: '/anno/publish';
-    method: 'POST';
-}
+    extends ReqResBase<AnnoPublishReq, AnnoPublishRes> {}
 
 export interface AnnoDeleteReq extends SessionReqBase {
     id: number;
     fid: string;
 }
 
-export interface AnnoDelete extends ReqResBase<AnnoDeleteReq, ResponseBase> {
-    path: '/anno/delete';
-    method: 'POST';
-}
+export interface AnnoDelete extends ReqResBase<AnnoDeleteReq, ResponseBase> {}

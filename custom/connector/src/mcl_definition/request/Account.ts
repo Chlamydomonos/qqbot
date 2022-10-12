@@ -6,19 +6,13 @@ export interface FriendListRes extends ResponseBase {
     data: User[];
 }
 
-export interface FriendList extends ReqResBase<SessionReqBase, FriendListRes> {
-    path: '/friendList';
-    method: 'GET';
-}
+export interface FriendList extends ReqResBase<SessionReqBase, FriendListRes> {}
 
 export interface GroupListRes extends ResponseBase {
     data: Group[];
 }
 
-export interface GroupList extends ReqResBase<SessionReqBase, GroupListRes> {
-    path: '/groupList';
-    method: 'GET';
-}
+export interface GroupList extends ReqResBase<SessionReqBase, GroupListRes> {}
 
 export interface MemberListReq extends SessionReqBase {
     target: number;
@@ -28,53 +22,35 @@ export interface MemberListRes extends ResponseBase {
     data: GroupMember[];
 }
 
-export interface MemberList extends ReqResBase<MemberListReq, MemberListRes> {
-    path: '/memberList';
-    method: 'GET';
-}
+export interface MemberList extends ReqResBase<MemberListReq, MemberListRes> {}
 
-export interface BotProfile extends ReqResBase<SessionReqBase, Profile> {
-    path: '/botProfile';
-    method: 'GET';
-}
+export interface BotProfile extends ReqResBase<SessionReqBase, Profile> {}
 
 export interface FriendProfileReq extends SessionReqBase {
     target: number;
 }
 
-export interface FriendProfile extends ReqResBase<FriendProfile, Profile> {
-    path: '/friendProfile';
-    method: 'GET';
-}
+export interface FriendProfile extends ReqResBase<FriendProfile, Profile> {}
 
 export interface MemberProfileReq extends SessionReqBase {
     target: number;
     memberId: number;
 }
 
-export interface MemberProfile extends ReqResBase<MemberProfileReq, Profile> {
-    path: '/memberProfile';
-    method: 'GET';
-}
+export interface MemberProfile extends ReqResBase<MemberProfileReq, Profile> {}
 
 export interface UserProfileReq extends SessionReqBase {
     target: number;
 }
 
-export interface UserProfile extends ReqResBase<UserProfileReq, Profile> {
-    path: '/userProfile';
-    method: 'GET';
-}
+export interface UserProfile extends ReqResBase<UserProfileReq, Profile> {}
 
 export interface DeleteFriendReq extends SessionReqBase {
     target: number;
 }
 
 export interface DeleteFriend
-    extends ReqResBase<DeleteFriendReq, ResponseBase> {
-    path: '/deleteFriend';
-    method: 'POST';
-}
+    extends ReqResBase<DeleteFriendReq, ResponseBase> {}
 
 export interface RespNewFriendRequestEventReq extends SessionReqBase {
     eventId: number;
@@ -85,10 +61,7 @@ export interface RespNewFriendRequestEventReq extends SessionReqBase {
 }
 
 export interface RespNewFriendRequestEvent
-    extends ReqResBase<RespNewFriendRequestEventReq, ResponseBase> {
-    path: '/resp/newFriendRequestEvent';
-    method: 'POST';
-}
+    extends ReqResBase<RespNewFriendRequestEventReq, ResponseBase> {}
 
 export interface RespMemberJoinRequestEventReq extends SessionReqBase {
     eventId: number;
@@ -99,10 +72,7 @@ export interface RespMemberJoinRequestEventReq extends SessionReqBase {
 }
 
 export interface RespMemberJoinRequestEvent
-    extends ReqResBase<RespMemberJoinRequestEventReq, ResponseBase> {
-    path: '/resp/memberJoinRequestEvent';
-    method: 'POST';
-}
+    extends ReqResBase<RespMemberJoinRequestEventReq, ResponseBase> {}
 
 export interface RespBotInvitedJoinGroupRequestEventReq extends SessionReqBase {
     eventId: number;
@@ -113,7 +83,4 @@ export interface RespBotInvitedJoinGroupRequestEventReq extends SessionReqBase {
 }
 
 export interface RespBotInvitedJoinGroupRequestEvent
-    extends ReqResBase<RespBotInvitedJoinGroupRequestEventReq, ResponseBase> {
-    path: '/resp/botInvitedJoinGroupRequestEvent';
-    method: 'POST';
-}
+    extends ReqResBase<RespBotInvitedJoinGroupRequestEventReq, ResponseBase> {}

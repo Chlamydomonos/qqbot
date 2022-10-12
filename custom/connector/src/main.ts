@@ -1,5 +1,5 @@
-import { WS_URL } from './definition/connect';
-import WSClient from './ws/WSClient';
+import { MCL_WS_URL } from './mcl_definition';
+import WSClient from './app/WSClient';
 
-const wsClient = new WSClient(WS_URL);
+const wsClient = new WSClient(MCL_WS_URL);
 wsClient.start();

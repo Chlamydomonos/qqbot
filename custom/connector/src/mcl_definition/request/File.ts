@@ -17,10 +17,7 @@ export interface FileListRes extends ResponseBase {
     data: $FileInfo[];
 }
 
-export interface FileList extends ReqResBase<FileListReq, FileListRes> {
-    path: '/file/list';
-    method: 'GET';
-}
+export interface FileList extends ReqResBase<FileListReq, FileListRes> {}
 
 export interface FileInfoReq extends SessionReqBase {
     id: string;
@@ -35,10 +32,7 @@ export interface FileInfoRes extends ResponseBase {
     data: $FileInfo;
 }
 
-export interface FileInfo extends ReqResBase<FileInfoReq, FileInfoRes> {
-    path: '/file/info';
-    method: 'GET';
-}
+export interface FileInfo extends ReqResBase<FileInfoReq, FileInfoRes> {}
 
 export interface FileMkdirReq extends SessionReqBase {
     id: string;
@@ -62,10 +56,7 @@ export interface FileMkdirRes extends ResponseBase {
     };
 }
 
-export interface FileMkdir extends ReqResBase<FileMkdirReq, FileMkdirRes> {
-    path: '/file/mkdir';
-    method: 'POST';
-}
+export interface FileMkdir extends ReqResBase<FileMkdirReq, FileMkdirRes> {}
 
 export interface FileDeleteReq extends SessionReqBase {
     id: string;
@@ -75,10 +66,7 @@ export interface FileDeleteReq extends SessionReqBase {
     qq?: number;
 }
 
-export interface FileDelete extends ReqResBase<FileDeleteReq, ResponseBase> {
-    path: '/file/delete';
-    method: 'POST';
-}
+export interface FileDelete extends ReqResBase<FileDeleteReq, ResponseBase> {}
 
 export interface FileMoveReq extends SessionReqBase {
     id: string;
@@ -90,10 +78,7 @@ export interface FileMoveReq extends SessionReqBase {
     moveToPath?: string;
 }
 
-export interface FileMove extends ReqResBase<FileMoveReq, ResponseBase> {
-    path: '/file/move';
-    method: 'POST';
-}
+export interface FileMove extends ReqResBase<FileMoveReq, ResponseBase> {}
 
 export interface FileRenameReq extends SessionReqBase {
     id: string;
@@ -104,10 +89,7 @@ export interface FileRenameReq extends SessionReqBase {
     renameTo: string;
 }
 
-export interface FileRename extends ReqResBase<FileRenameReq, ResponseBase> {
-    path: '/file/rename';
-    method: 'POST';
-}
+export interface FileRename extends ReqResBase<FileRenameReq, ResponseBase> {}
 
 export interface UploadImageReq extends SessionReqBase {
     type: 'friend' | 'group' | 'temp';
@@ -121,8 +103,6 @@ export interface UploadImageRes {
 
 export interface UploadImage
     extends ReqResBase<UploadImageReq, UploadImageRes> {
-    path: '/uploadImage';
-    method: 'POST';
     isFormData: true;
 }
 
@@ -138,8 +118,6 @@ export interface UploadVoiceRes {
 
 export interface UploadVoice
     extends ReqResBase<UploadVoiceReq, UploadVoiceRes> {
-    path: '/uploadVoice';
-    method: 'POST';
     isFormData: true;
 }
 
@@ -162,6 +140,5 @@ export interface FileUploadRes {
 }
 
 export interface FileUpload extends ReqResBase<FileUploadReq, FileUploadRes> {
-    path: '/file/upload';
-    method: 'POST';
+    isFormData: true;
 }
