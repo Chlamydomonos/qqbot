@@ -10,8 +10,8 @@ import {
     Method as MclMethod,
     Methods,
     UnclearPaths as MclUnclearPaths,
-} from '../mcl_definition';
-import type { ReqResBase } from '../mcl_definition/request/base';
+} from '../../mcl_definition';
+import type { ReqResBase } from '../../mcl_definition/request/base';
 
 type Mm<P extends MclAllPaths> = P extends MclClearPaths
     ? MclMethod<P>

@@ -5,7 +5,7 @@ import {
     EventDict as MclEventDict,
     WsEvent,
     isEventName as mcl_isEventName,
-} from '../mcl_definition';
+} from '../../mcl_definition';
 import { EventEmitter } from 'node:events';
 
 export interface Connect {}
