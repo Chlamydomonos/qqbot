@@ -70,6 +70,4 @@ class HTTPClient {
     }
 }
 
-const test = new HTTPClient();
-
 export default new HTTPClient();

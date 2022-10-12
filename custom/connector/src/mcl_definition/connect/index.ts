@@ -1,4 +1,4 @@
-import type { Event } from '../event';
+import type { EventObj } from '../event';
 
 const MCL_HOST = 'mcl';
 const BACKEND_HOST = 'backend';
@@ -18,7 +18,7 @@ export interface WsConnectSuccess {
 
 export interface WsEvent {
     syncId: '-1';
-    data: Event;
+    data: EventObj;
 }
 
 export const MCL_WS_URL = `ws://${MCL_HOST}:${MCL_PORT}/all?verifyKey=${VERIFY_KEY}&qq=${QQ}`;
