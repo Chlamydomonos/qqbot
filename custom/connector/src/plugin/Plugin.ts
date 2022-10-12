@@ -85,11 +85,12 @@ export type PluginThis<
     PluginInstancePrivateMethods<E, D, PubM, PriM>;
 
 export type PluginApi<
+    N extends string,
     E extends EventDict,
     D extends DataMap<E, D, PubM, PriM>,
     PubM extends MethodMap<E, D, PubM, PriM>,
     PriM extends MethodMap<E, D, PubM, PriM>
-> = PluginInstanceEventHandler<E> & PluginInstancePublicMethods<E, D, PubM, PriM>;
+> = { name: N } & PluginInstanceEventHandler<E> & PluginInstancePublicMethods<E, D, PubM, PriM>;
 
 export type PluginInstance<
     N extends string,
@@ -97,7 +98,18 @@ export type PluginInstance<
     D extends DataMap<E, D, PubM, PriM>,
     PubM extends MethodMap<E, D, PubM, PriM>,
     PriM extends MethodMap<E, D, PubM, PriM>
-> = { name: N } & PluginThis<E, D, PubM, PriM> & PluginApi<E, D, PubM, PriM>;
+> = PluginThis<E, D, PubM, PriM> & PluginApi<N, E, D, PubM, PriM>;
+
+export type PluginListGetter = <
+    P extends PluginApi<N, E, D, PubM, PriM>,
+    N extends string,
+    E extends EventDict,
+    D extends DataMap<E, D, PubM, PriM>,
+    PubM extends MethodMap<E, D, PubM, PriM>,
+    PriM extends MethodMap<E, D, PubM, PriM>
+>(
+    name: N
+) => P;
 
 export interface PluginBase<
     N extends string,
@@ -147,5 +159,5 @@ export function definePlugin<
         }
     }
 
-    return out as PluginInstance<N, E, D, PubM, PriM>;
+    return out as PluginApi<N, E, D, PubM, PriM>;
 }
