@@ -9,19 +9,13 @@ export interface VerifyRes extends ResponseBase {
     session: string;
 }
 
-export interface Verify extends ReqResBase<VerifyReq, VerifyRes> {
-    path: '/verify';
-    method: 'POST';
-}
+export interface Verify extends ReqResBase<VerifyReq, VerifyRes> {}
 
 export interface BindReq extends SessionReqBase {
     qq: number;
 }
 
-export interface Bind extends ReqResBase<BindReq, ResponseBase> {
-    path: '/bind';
-    method: 'POST';
-}
+export interface Bind extends ReqResBase<BindReq, ResponseBase> {}
 
 export interface SessionInfoRes extends ResponseBase {
     data: {
@@ -35,19 +29,13 @@ export interface SessionInfoRes extends ResponseBase {
 }
 
 export interface SessionInfo
-    extends ReqResBase<SessionReqBase, SessionInfoRes> {
-    path: '/sessionInfo';
-    method: 'GET';
-}
+    extends ReqResBase<SessionReqBase, SessionInfoRes> {}
 
 export interface ReleaseReq extends SessionReqBase {
     qq: number;
 }
 
-export interface Release extends ReqResBase<ReleaseReq, ResponseBase> {
-    path: '/release';
-    method: 'POST';
-}
+export interface Release extends ReqResBase<ReleaseReq, ResponseBase> {}
 
 export interface AboutRes extends ResponseBase {
     data: {
@@ -55,19 +43,13 @@ export interface AboutRes extends ResponseBase {
     };
 }
 
-export interface About extends ReqResBase<undefined, AboutRes> {
-    path: '/about';
-    method: 'GET';
-}
+export interface About extends ReqResBase<undefined, AboutRes> {}
 
 export interface BotListRes extends ResponseBase {
     data: number[];
 }
 
-export interface BotList extends ReqResBase<undefined, BotListRes> {
-    path: '/botList';
-    method: 'GET';
-}
+export interface BotList extends ReqResBase<undefined, BotListRes> {}
 
 export interface MessageFormIdReq extends SessionReqBase {
     messageId: number;
@@ -82,6 +64,4 @@ export interface MessageFormIdRes extends ResponseBase {
 }
 
 export interface MessageFormId
-    extends ReqResBase<MessageFormIdReq, MessageFormIdRes> {
-    path: '/messageFormId';
-}
+    extends ReqResBase<MessageFormIdReq, MessageFormIdRes> {}

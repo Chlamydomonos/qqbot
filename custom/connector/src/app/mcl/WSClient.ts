@@ -24,10 +24,10 @@ export interface WsError {
 }
 
 export const EVENT_DICT = {
-    'ws:Connect': null as unknown as Connect,
-    'ws:ConnectFail': null as unknown as ConnectFail,
-    'ws:Close': null as unknown as Close,
-    'ws:Error': null as unknown as WsError,
+    'mcl_ws:Connect': null as unknown as Connect,
+    'mcl_ws:ConnectFail': null as unknown as ConnectFail,
+    'mcl_ws:Close': null as unknown as Close,
+    'mcl_ws:Error': null as unknown as WsError,
 };
 
 type EventDict = typeof EVENT_DICT;
@@ -36,22 +36,15 @@ type AllEvents = keyof EventDict | MclEventNames;
 
 type ExpandEventDict = EventDict & MclEventDict;
 
-type EventObj<E extends AllEvents> = E extends keyof ExpandEventDict
-    ? ExpandEventDict[E]
-    : never;
+type EventObj<E extends AllEvents> = E extends keyof ExpandEventDict ? ExpandEventDict[E] : never;
 
-export default class WSClient extends EventEmitter {
+export interface WsClientEventEmitter {
+    on<N extends AllEvents>(eventName: N, listener: (event: EventObj<N>) => void): this;
+    emit<N extends AllEvents>(eventName: N, eventObj: EventObj<N>): boolean;
+}
+export default class WSClient extends EventEmitter implements WsClientEventEmitter {
     private ws: client;
     private connection?: connection;
-    on<N extends AllEvents>(
-        eventName: N,
-        listener: (event: EventObj<N>) => void
-    ) {
-        return super.on(eventName, listener);
-    }
-    emit<N extends AllEvents>(eventName: N, eventObj: EventObj<N>) {
-        return super.emit(eventName, eventObj);
-    }
     constructor(private url: string | Url) {
         super();
         this.ws = new client();
@@ -65,18 +58,16 @@ export default class WSClient extends EventEmitter {
         connection.on('message', (message) => this.onMessage(message));
         connection.on('close', (code, desc) => this.onClose(code, desc));
         connection.on('error', (err) => this.onError(err));
-        this.emit('ws:Connect', {});
+        this.emit('mcl_ws:Connect', {});
     }
 
     private onConnectFail(err: Error) {
         console.log(`Ws Connect Fail: ${err}`);
-        this.emit('ws:ConnectFail', { error: err });
+        this.emit('mcl_ws:ConnectFail', { error: err });
     }
 
     private onMessage(message: Message) {
-        console.log(
-            `Ws Received: ${message.type == 'utf8' ? message.utf8Data : ''}`
-        );
+        console.log(`Ws Received: ${message.type == 'utf8' ? message.utf8Data : ''}`);
         if (message.type == 'utf8') {
             const msg = (JSON.parse(message.utf8Data) as WsEvent).data;
             const msgType = `mcl:${msg.type}`;
@@ -88,12 +79,12 @@ export default class WSClient extends EventEmitter {
 
     private onClose(code: number, desc: string) {
         console.log('Ws Closed');
-        this.emit('ws:Close', { code: code, desc: desc });
+        this.emit('mcl_ws:Close', { code: code, desc: desc });
     }
 
     private onError(err: Error) {
         console.log(`Ws Error: ${err}`);
-        this.emit('ws:Error', { error: err });
+        this.emit('mcl_ws:Error', { error: err });
     }
 
     start() {

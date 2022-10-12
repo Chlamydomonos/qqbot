@@ -69,6 +69,7 @@ import type {
     Voice4,
     Xml,
 } from './MsgChainSend';
+import type { About, Bind, BotList, MessageFormId, Release, SessionInfo, Verify } from './Session';
 
 export type MsgChainSend =
     | Quote
@@ -101,6 +102,13 @@ export type MsgChainSend =
     | MiraiCode;
 
 const API_DICT = {
+    '/verify$POST': null as unknown as Verify,
+    '/bind$POST': null as unknown as Bind,
+    '/sessionInfo$GET': null as unknown as SessionInfo,
+    '/release$POST': null as unknown as Release,
+    '/about$GET': null as unknown as About,
+    '/botList$GET': null as unknown as BotList,
+    '/messageFromId$GET': null as unknown as MessageFormId,
     '/friendList$GET': null as unknown as FriendList,
     '/groupList$GET': null as unknown as GroupList,
     '/memberList$GET': null as unknown as MemberList,
@@ -109,12 +117,9 @@ const API_DICT = {
     '/memberProfile$GET': null as unknown as MemberProfile,
     '/userProfile$GET': null as unknown as UserProfile,
     '/deleteFriend$POST': null as unknown as DeleteFriend,
-    '/resp/newFriendRequestEvent$POST':
-        null as unknown as RespNewFriendRequestEvent,
-    '/resp/memberJoinRequestEvent$POST':
-        null as unknown as RespMemberJoinRequestEvent,
-    '/resp/botInvitedJoinGroupRequestEvent$POST':
-        null as unknown as RespBotInvitedJoinGroupRequestEvent,
+    '/resp/newFriendRequestEvent$POST': null as unknown as RespNewFriendRequestEvent,
+    '/resp/memberJoinRequestEvent$POST': null as unknown as RespMemberJoinRequestEvent,
+    '/resp/botInvitedJoinGroupRequestEvent$POST': null as unknown as RespBotInvitedJoinGroupRequestEvent,
     '/file/list$GET': null as unknown as FileList,
     '/file/info$GET': null as unknown as FileInfo,
     '/file/mkdir$POST': null as unknown as FileMkdir,
@@ -149,16 +154,11 @@ export type AllApis = ApiDict[keyof ApiDict];
 
 type CatTemp<T extends string, U extends Methods> = `${T}\$${U}`;
 
-export type HasApi<T extends string, U extends Methods> = CatTemp<
-    T,
-    U
-> extends keyof ApiDict
+export type HasApi<T extends string, U extends Methods> = CatTemp<T, U> extends keyof ApiDict
     ? ApiDict[CatTemp<T, U>]
     : never;
 
-export type AllPaths = keyof ApiDict extends CatTemp<infer R, Methods>
-    ? R
-    : never;
+export type AllPaths = keyof ApiDict extends CatTemp<infer R, Methods> ? R : never;
 
 type GetDict = {
     [K in keyof ApiDict]: K extends CatTemp<infer R, 'GET'> ? R : never;
@@ -189,19 +189,12 @@ type UnclearDict = {
 export type UnclearPaths = UnclearDict[keyof UnclearDict];
 export type ClearPaths = Exclude<AllPaths, UnclearPaths>;
 
-export type Api<P extends AllPaths, M extends Methods> = CatTemp<
-    P,
-    M
-> extends keyof ApiDict
+export type Api<P extends AllPaths, M extends Methods> = CatTemp<P, M> extends keyof ApiDict
     ? ApiDict[CatTemp<P, M>]
     : never;
 
 type ClearMethodDict = {
-    [K in ClearPaths]: K extends GetPaths
-        ? 'GET'
-        : K extends PostPaths
-        ? 'POST'
-        : 'POSTf';
+    [K in ClearPaths]: K extends GetPaths ? 'GET' : K extends PostPaths ? 'POST' : 'POSTf';
 };
 
 type UnclearMethodDict = {

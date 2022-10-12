@@ -4,8 +4,8 @@ const MCL_HOST = 'mcl';
 const BACKEND_HOST = 'backend';
 const MCL_PORT = '8765';
 const BACKEND_PORT = '5000';
-const QQ = '2472884021';
 
+export const QQ = '2472884021';
 export const VERIFY_KEY = 'CHLAMYDOMONOS';
 
 export interface WsConnectSuccess {
