@@ -1,163 +1,107 @@
-import type { IHttpClient as IMclHttpClient } from '../app/mcl/HTTPClient';
-import type { IGlobalEventEmitter } from '../event/GlobalEventEmitter';
+import type { IHttpClient as MiraiHttpClient } from '../app/mcl/HTTPClient';
+import type BotEventEmitter from '../event/GlobalEventEmitter';
 import EventEmitter from 'node:events';
 
-type EventDict = Record<string, unknown>;
+type EmitMap = Record<string, any>;
+type DataMap = Record<string, any>;
+type MethodMap = Record<string, (...args: any[]) => any>;
 
-type EventConstructor<T> = {
-    new (...args: any[]): T & {};
-};
-
-type EventMap<T extends EventDict> = {
-    [EventName in keyof T]: EventConstructor<T[EventName]>;
-};
-
-type DataMap<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = {
-    [key: string]: any;
-};
-
-type Method<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = (this: PluginThis<E, D, PubM, PriM>, ...args: any[]) => any;
-
-type MethodMap<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = {
-    [key: string]: Method<E, D, PubM, PriM>;
-};
-
-export interface PluginInstanceFields {
-    botEventEmitter: IGlobalEventEmitter;
-    miraiHttpClient: IMclHttpClient;
+interface PluginBase {
+    botEventEmitter: BotEventEmitter;
+    miraiHttpClient: MiraiHttpClient;
 }
 
-export interface PluginInstanceEventEmitter<E extends EventDict> {
-    emit<N extends keyof E, O extends E[N]>(name: N, event: O): void;
+interface PluginEmit<E extends EmitMap> {
+    emit<EN extends keyof E>(name: EN, event: E[EN]): boolean;
 }
 
-export interface PluginInstanceEventHandler<E extends EventDict> {
-    on<N extends keyof E, O extends E[N]>(name: N, listener: (event: O) => void): this;
-}
-
-export type PluginInstanceData<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = {
-    [key in keyof D]: D[key];
-};
-
-export type PluginInstancePublicMethods<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = PubM;
-
-export type PluginInstancePrivateMethods<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = PriM;
-
-export type PluginThis<
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = PluginInstanceFields &
-    PluginInstanceEventEmitter<E> &
-    PluginInstanceData<E, D, PubM, PriM> &
-    PluginInstancePublicMethods<E, D, PubM, PriM> &
-    PluginInstancePrivateMethods<E, D, PubM, PriM>;
-
-export type PluginApi<
-    N extends string,
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = { name: N } & PluginInstanceEventHandler<E> & PluginInstancePublicMethods<E, D, PubM, PriM>;
-
-export type PluginInstance<
-    N extends string,
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> = PluginThis<E, D, PubM, PriM> & PluginApi<N, E, D, PubM, PriM>;
-
-export type PluginListGetter = <
-    P extends PluginApi<N, E, D, PubM, PriM>,
-    N extends string,
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
->(
-    name: N
-) => P;
-
-export interface PluginBase<
-    N extends string,
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
-> {
+type PluginThis<N extends string, E extends EmitMap, D extends DataMap, P extends MethodMap, M extends MethodMap> = {
     name: N;
-    data: D;
-    emits: EventMap<E>;
-    publicMethods: PubM;
-    privateMethods: PriM;
+} & PluginBase &
+    PluginEmit<E> &
+    D &
+    P &
+    M;
+
+interface PluginOn<E extends EmitMap> {
+    on<EN extends keyof E>(name: EN, listener: (event: E[EN]) => void): this;
 }
 
-class OutEmitter extends EventEmitter {
-    constructor() {
-        super();
-    }
-}
+type PluginApi<N extends string, E extends EmitMap, D extends DataMap, P extends MethodMap> = {
+    name: N;
+} & PluginOn<E> &
+    P;
+
+type PluginCtrl = { onStart?: () => void; onStop?: () => void };
+
+type PluginDef<N extends string, E extends EmitMap, D extends DataMap, P extends MethodMap, M extends MethodMap> = {
+    name: N;
+    emits?: E;
+    data?: D & ThisType<void>;
+    publicMethods?: P & ThisType<PluginThis<N, E, D, P, M>>;
+    privateMethods?: M & ThisType<PluginThis<N, E, D, P, M>>;
+} & PluginCtrl;
+
+type Plugin<
+    N extends string,
+    E extends EmitMap,
+    D extends DataMap,
+    P extends MethodMap,
+    M extends MethodMap
+> = PluginThis<N, E, D, P, M> & PluginApi<N, E, D, P> & PluginCtrl;
+
+type PluginConstructor<
+    N extends string,
+    E extends EmitMap,
+    D extends DataMap,
+    P extends MethodMap,
+    M extends MethodMap
+> = {
+    new (): Plugin<N, E, D, P, M>;
+};
+
+class Out extends EventEmitter {}
 
 export function definePlugin<
     N extends string,
-    E extends EventDict,
-    D extends DataMap<E, D, PubM, PriM>,
-    PubM extends MethodMap<E, D, PubM, PriM>,
-    PriM extends MethodMap<E, D, PubM, PriM>
->(base: PluginBase<N, E, D, PubM, PriM>) {
-    let out: any = new OutEmitter();
-    out.name = base.name;
-    if (base.emits) {
-        out.emits = base.emits;
-    }
-    if (base.data) {
-        for (const key in base.data) {
-            out[key] = base.data[key];
+    E extends EmitMap,
+    D extends DataMap,
+    P extends MethodMap,
+    M extends MethodMap
+>(def: PluginDef<N, E, D, P, M>) {
+    function out(this: any) {
+        this.name = def.name;
+        if (def.data) {
+            for (const k in def.data) {
+                this[k] = def.data[k];
+            }
+        }
+        if (def.publicMethods) {
+            for (const k in def.publicMethods) {
+                this[k] = def.publicMethods[k];
+            }
+        }
+        if (def.privateMethods) {
+            for (const k in def.privateMethods) {
+                this[k] = def.privateMethods[k];
+            }
+        }
+        if (def.onStart) {
+            this.onStart = def.onStart;
+        }
+        if (def.onStop) {
+            this.onStop = def.onStop;
         }
     }
-    if (base.publicMethods) {
-        for (const key in base.publicMethods) {
-            out[key] = base.publicMethods[key];
-        }
-    }
-    if (base.privateMethods) {
-        for (const key in base.privateMethods) {
-            out[key] = base.privateMethods[key];
-        }
-    }
-
-    return out as PluginApi<N, E, D, PubM, PriM>;
+    return out as unknown as PluginConstructor<N, E, D, P, M>;
 }
+
+export type PluginGetter = <
+    N extends string,
+    E extends EmitMap,
+    D extends DataMap,
+    P extends MethodMap,
+    M extends MethodMap
+>(
+    obj: PluginConstructor<N, E, D, P, M>
+) => PluginApi<N, E, D, P>;
