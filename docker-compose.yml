@@ -20,6 +20,12 @@ services:
             - mirai_net
         depends_on:
             - mcl
+    connector_npm_repo:
+        restart: always
+        container_name: connector_npm_repo
+        image: sonatype/nexus3:latest
+        ports:
+            - "8701:8081"
 
 networks:
     mirai_net:
