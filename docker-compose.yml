@@ -23,9 +23,15 @@ services:
     connector_npm_repo:
         restart: always
         container_name: connector_npm_repo
-        image: sonatype/nexus3:latest
+        image: verdaccio/verdaccio:latest
+        environment:
+            - VERDACCIO_PORT=4873
         ports:
-            - "8701:8081"
+            - "8701:4873"
+        volumes:
+            - "./custom/connector_npm_repo/storage:/verdaccio/storage"
+            - "./custom/connector_npm_repo/conf:/verdaccio/conf"
+            - "./custom/connector_npm_repo/plugins:/verdaccio/plugins"
 
 networks:
     mirai_net:
