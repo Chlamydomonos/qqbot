@@ -23,6 +23,8 @@ services:
         networks:
             - mirai_net
             - npm_net
+        volumes:
+            - ./custom/connector/logs:/root/.npm/_logs
         depends_on:
             - mcl
     connector_npm_repo:
