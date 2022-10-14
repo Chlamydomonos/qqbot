@@ -8,4 +8,3 @@ ADD ./tsconfig.json /app/tsconfig.json
 ADD ./src /app/src
 RUN npm install
 RUN npm run build
-WORKDIR /app/dist
