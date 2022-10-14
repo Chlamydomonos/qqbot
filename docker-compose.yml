@@ -18,6 +18,7 @@ services:
         command: [ 'node', './main.js' ]
         networks:
             - mirai_net
+            - npm_net
         depends_on:
             - mcl
     connector_npm_repo:
@@ -28,11 +29,17 @@ services:
             - VERDACCIO_PORT=4873
         ports:
             - "8701:4873"
+        expose:
+            - 4873
         volumes:
             - "./custom/connector_npm_repo/storage:/verdaccio/storage"
             - "./custom/connector_npm_repo/conf:/verdaccio/conf"
             - "./custom/connector_npm_repo/plugins:/verdaccio/plugins"
+        networks:
+            - npm_net
 
 networks:
     mirai_net:
+        driver: bridge
+    npm_net:
         driver: bridge
