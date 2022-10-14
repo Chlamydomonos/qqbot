@@ -15,7 +15,11 @@ services:
         restart: always
         container_name: connector
         build: ./custom/connector
-        command: [ 'node', './main.js' ]
+        command: >
+            bash -c "
+                npm publish &&
+                node ./main.js
+            "
         networks:
             - mirai_net
             - npm_net
