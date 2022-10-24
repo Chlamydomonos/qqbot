@@ -16,7 +16,15 @@ auth:
         algorithm: md5 # 这里选择 md5 作为加密算法
 i18n:
     web: zh-CN
-
+security:
+    api:
+        jwt:
+            sign:
+                expiresIn: 60d
+                notBefore: 1
+    web:
+        sign:
+            expiresIn: 7d
 uplinks:
     npmjs:
         url: https://registry.npmjs.org/
