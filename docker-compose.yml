@@ -22,6 +22,7 @@ services:
         volumes:
             - ./custom/connector/logs:/root/.npm/_logs
             - ./custom/connector:/origin
+            - ./custom/connector/files:/app/files
         depends_on:
             - mcl
     connector_npm_repo:

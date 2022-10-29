@@ -47,6 +47,12 @@ export default class PluginLoader {
             fs.readFile(pluginsFileName, async (err, data) => {
                 if (err != null) {
                     reject(new Error('Cannot read plugin list'));
+                    return;
+                }
+                if(data == null) {
+                    console.log('No plugins to load');
+                    resolve();
+                    return;
                 }
                 const dataStr = data.toString();
                 const names = dataStr.split('\n');

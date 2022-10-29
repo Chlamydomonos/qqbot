@@ -39,7 +39,7 @@ export class App {
             this.mclHttpClient.sessionKey = verifyRes.session;
 
             console.log('Loading plugins...');
-            await this.pluginLoader.loadAll(`${APP_FILES_ROOT}/plugins.txt`);
+            await this.pluginLoader.loadAll(`${APP_FILES_ROOT}/plugin.txt`);
         } catch (e) {
             console.log(`Start mcl http client failed: ${e}`);
             throw e;

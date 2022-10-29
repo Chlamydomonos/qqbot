@@ -8,7 +8,6 @@ ADD ./package-lock.json /app/package-lock.json
 ADD ./tsconfig.json /app/tsconfig.json
 ADD ./src /app/src
 ADD ./startApp.sh /app/startApp.sh
-ADD ./files /app/files
 RUN npm install
 RUN npm run build
 RUN npm version patch
