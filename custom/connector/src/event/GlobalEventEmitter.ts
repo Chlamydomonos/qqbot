@@ -5,7 +5,7 @@ import app from '../app';
 import EventEmitter from 'node:events';
 
 export interface IGlobalEventEmitter {
-    on(eventName: string, listener: (event: any, listenerData?: Record<string, any>) => void): this;
+    on(eventName: string, listener: (event: any, listenerData: Record<string, any>) => void): this;
     emit(eventName: string, event: any): boolean;
 }
 

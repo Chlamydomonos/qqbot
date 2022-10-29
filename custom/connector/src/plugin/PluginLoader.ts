@@ -11,9 +11,17 @@ class PluginTemplate {
     }
 }
 
+interface PluginLoaderErrorEvent {
+    error: any;
+}
+
+export const EVENT_DICT = {
+    'plugin_loader:error': null as unknown as PluginLoaderErrorEvent,
+};
+
 export default class PluginLoader {
     private allPlugins = new Set<any>();
-    async load(pluginName: string) {
+    async load(pluginName: string): Promise<boolean> {
         try {
             console.log(`Loading plugin ${pluginName}...`);
             const pluginImport = await import(`@chlamydbot/${pluginName}`);
@@ -37,19 +45,23 @@ export default class PluginLoader {
             realPlugin.onLoad();
             this.allPlugins.add(realPlugin);
             app.eventEmitter.emit(`${pluginName}:start`, {});
+            return true;
         } catch (e) {
             console.log(`Failed to load plugin ${pluginName}`);
             app.eventEmitter.emit(`${pluginName}:error`, { error: e });
+            return false;
         }
     }
     async loadAll(pluginsFileName: string) {
         return new Promise<void>((resolve, reject) => {
             fs.readFile(pluginsFileName, async (err, data) => {
                 if (err != null) {
-                    reject(new Error('Cannot read plugin list'));
+                    app.eventEmitter.emit('plugin_loader:error', { error: err });
+                    console.log('Failed to read plugin list');
+                    resolve();
                     return;
                 }
-                if(data == null) {
+                if (data == null) {
                     console.log('No plugins to load');
                     resolve();
                     return;
@@ -66,6 +78,7 @@ export default class PluginLoader {
     unloadAll() {
         this.allPlugins.forEach((value) => {
             const pluginName = value.name;
+            console.log(`Unloading plugin ${value.name}...`);
             app.eventEmitter.emit(`${pluginName}:stop`, {});
         });
         this.allPlugins.clear();

@@ -1,6 +1,8 @@
 import type { EVENT_DICT as MCL_EVENT_DICT } from '../mcl_definition';
 import type { EVENT_DICT as MCL_WS_EVENT_DICT } from '../app/mcl/WSClient';
 import type { EVENT_DICT as MCL_HTTP_EVENT_DICT, IHttpClient } from '../app/mcl/HTTPClient';
+import type { EVENT_DICT as PLUGIN_LOADER_EVENT_DICT } from './PluginLoader';
+import type { EVENT_DICT as CONTROL_SERVER_EVENT_DICT } from '../app/control/ControlServer';
 
 type DataMap = Record<string, any>;
 type MethodMap = Record<string, (...args: any[]) => any>;
@@ -42,13 +44,13 @@ type EmitMapUnion<T extends DefaultPluginAPI[]> = EmitMaps<T>[keyof EmitMaps<T>]
 type DependenciesEmitMap<T extends DefaultPluginAPI[]> = CombineUnion<T[number]['emits']> &
     CombineUnion<EmitMapUnion<T>>;
 
-type AllEventsDict<
-    Name extends string,
-    Emits extends EmitMap,
-    Listens extends DefaultPluginAPI[]
-> = typeof MCL_EVENT_DICT &
+type CoreEventsDict = typeof MCL_EVENT_DICT &
     typeof MCL_WS_EVENT_DICT &
     typeof MCL_HTTP_EVENT_DICT &
+    typeof PLUGIN_LOADER_EVENT_DICT &
+    typeof CONTROL_SERVER_EVENT_DICT;
+
+type AllEventsDict<Name extends string, Emits extends EmitMap, Listens extends DefaultPluginAPI[]> = CoreEventsDict &
     Emits &
     DefaultEmits<Name> &
     DependenciesEmitMap<Listens>;
