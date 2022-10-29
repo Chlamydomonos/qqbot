@@ -1,4 +1,15 @@
 {
   "editor.formatOnSave": true,
-  "cSpell.words": ["Chlamyd", "invitor", "Mirai", "Relogin", "Zhao"]
+  "cSpell.words": [
+    "Chlamyd",
+    "chlamydbot",
+    "htpasswd",
+    "invitor",
+    "middlewares",
+    "Mirai",
+    "Relogin",
+    "taobao",
+    "unpublish",
+    "Zhao"
+  ]
 }

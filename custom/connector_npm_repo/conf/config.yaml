@@ -28,7 +28,7 @@ uplinks:
         timeout: 10s
 
 packages:
-    "@bot-plugin/*":
+    "@chlamydbot/*":
         access: $all # "$all", "$anonymous", "$authenticated"
         publish: $authenticated
         unpublish: $authenticated

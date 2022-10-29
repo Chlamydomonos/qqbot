@@ -1,13 +1,22 @@
+import type { IGlobalEventEmitter } from '../event/GlobalEventEmitter';
+import GlobalEventEmitter from '../event/GlobalEventEmitter';
 import { MCL_WS_URL, QQ, VERIFY_KEY } from '../mcl_definition';
+import PluginLoader from '../plugin/PluginLoader';
 import type { HTTPClient } from './mcl/HTTPClient';
 import MclHTTPClient from './mcl/HTTPClient';
 import MclWSClient from './mcl/WSClient';
 
+const APP_FILES_ROOT = '/app/files';
+
 export class App {
     mclWsClient: MclWSClient;
     mclHttpClient: HTTPClient = MclHTTPClient;
+    eventEmitter: IGlobalEventEmitter;
+    pluginLoader: PluginLoader;
     constructor() {
         this.mclWsClient = new MclWSClient(MCL_WS_URL);
+        this.eventEmitter = new GlobalEventEmitter();
+        this.pluginLoader = new PluginLoader();
     }
 
     async start() {
@@ -28,6 +37,9 @@ export class App {
                 throw new Error(`Bind response data is ${bindRes.code}: ${bindRes.msg}`);
             }
             this.mclHttpClient.sessionKey = verifyRes.session;
+
+            console.log('Loading plugins...');
+            await this.pluginLoader.loadAll(`${APP_FILES_ROOT}/plugins.txt`);
         } catch (e) {
             console.log(`Start mcl http client failed: ${e}`);
             throw e;

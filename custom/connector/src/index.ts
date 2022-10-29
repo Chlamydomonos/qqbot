@@ -1,1 +1,1 @@
-export { definePlugin } from './plugin/Plugin';
+export { definePlugin } from './plugin/PluginDef';
