@@ -43,6 +43,7 @@ export default class PluginLoader {
 
             realPlugin.onLoad = pluginDef.onLoad;
 
+            console.log(`onload?: ${realPlugin.onLoad != null}`);
             realPlugin.onLoad();
             this.allPlugins.set(pluginName, realPlugin);
             app.eventEmitter.emit(`${pluginName}:start`, {});
@@ -71,7 +72,7 @@ export default class PluginLoader {
                 const dataStr = data.toString();
                 const names = dataStr.split('\n');
                 for (let i = 0; i < names.length; i++) {
-                    if(!names[i].match('/^\s*$/')) {
+                    if (!names[i].match('/^s*$/')) {
                         await this.load(names[i]);
                     }
                 }
