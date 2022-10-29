@@ -2,10 +2,19 @@ import type { MsgChainSend } from '.';
 import type { MsgChainObj } from '../event';
 import type { ReqResBase, ResponseBase, SessionReqBase } from './base';
 
-export interface SendFriendMessageReq extends SessionReqBase {
+interface SendFriendMessageReq1 extends SessionReqBase {
     target: number;
+    quote?: number;
     messageChain: MsgChainSend[];
 }
+
+interface SendFriendMessageReq2 extends SessionReqBase {
+    qq: number;
+    quote?: number;
+    messageChain: MsgChainSend[];
+}
+
+export type SendFriendMessageReq = SendFriendMessageReq1 | SendFriendMessageReq2;
 
 export interface SendFriendMessageRes extends ResponseBase {
     messageId: number;
@@ -13,10 +22,19 @@ export interface SendFriendMessageRes extends ResponseBase {
 
 export interface SendFriendMessage extends ReqResBase<SendFriendMessageReq, SendFriendMessageRes> {}
 
-export interface SendGroupMessageReq extends SessionReqBase {
+interface SendGroupMessageReq1 extends SessionReqBase {
     target: number;
+    quote?: number;
     messageChain: MsgChainSend[];
 }
+
+interface SendGroupMessageReq2 extends SessionReqBase {
+    group: number;
+    quote?: number;
+    messageChain: MsgChainSend[];
+}
+
+export type SendGroupMessageReq = SendGroupMessageReq1 | SendFriendMessageReq2;
 
 export interface SendGroupMessageRes extends ResponseBase {
     messageId: number;
@@ -27,6 +45,7 @@ export interface SendGroupMessage extends ReqResBase<SendGroupMessageReq, SendGr
 export interface SendTempMessageReq extends SessionReqBase {
     qq: number;
     group: number;
+    quote?: number;
     messageChain: MsgChainSend[];
 }
 
