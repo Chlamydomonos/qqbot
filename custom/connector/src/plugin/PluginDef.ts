@@ -117,7 +117,7 @@ interface LoadedPlugin<Name extends string, PublicMethods extends MethodMap, Emi
     $toLoad: unknown;
 }
 
-type Plugin<Name extends string, PublicMethods extends MethodMap, Emits extends EmitMap> =
+export type Plugin<Name extends string, PublicMethods extends MethodMap, Emits extends EmitMap> =
     | NotLoadedPlugin<Name, PublicMethods, Emits>
     | LoadedPlugin<Name, PublicMethods, Emits>;
 
