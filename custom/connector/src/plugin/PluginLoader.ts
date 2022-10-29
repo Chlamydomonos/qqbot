@@ -100,7 +100,7 @@ export default class PluginLoader {
         this.allPlugins.clear();
     }
 
-    async add(pluginName: string): Promise<boolean> {
+    async loadNew(pluginName: string): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
             fs.readFile(this.pluginsFileName, async (err, data) => {
                 if (err != null) {
