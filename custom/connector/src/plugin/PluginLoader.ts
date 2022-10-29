@@ -43,7 +43,6 @@ export default class PluginLoader {
 
             realPlugin.onLoad = pluginDef.onLoad;
 
-            console.log(`onload?: ${realPlugin.onLoad != null}`);
             realPlugin.onLoad();
             this.allPlugins.set(pluginName, realPlugin);
             app.eventEmitter.emit(`${pluginName}:start`, {});
