@@ -13,7 +13,7 @@ export interface MsgQuote extends MsgChainObjBase {
     groupId: number;
     senderId: number;
     targetId: number;
-    origin: MsgChainObj[];
+    origin: [MsgSource, ...MsgChainObj[]];
 }
 
 export interface MsgAt extends MsgChainObjBase {
@@ -79,13 +79,7 @@ export interface MsgApp extends MsgChainObjBase {
 
 export interface MsgPoke extends MsgChainObjBase {
     type: 'Poke';
-    name:
-        | 'Poke'
-        | 'ShowLove'
-        | 'Like'
-        | 'Heartbroken'
-        | 'SixSixSix'
-        | 'FangDaZhao';
+    name: 'Poke' | 'ShowLove' | 'Like' | 'Heartbroken' | 'SixSixSix' | 'FangDaZhao';
 }
 
 export interface MsgDice extends MsgChainObjBase {
@@ -116,7 +110,7 @@ export interface MsgForwardMessage extends MsgChainObjBase {
         senderId: number;
         time: number;
         senderName: string;
-        messageChain: MsgChainObj[];
+        messageChain: [MsgSource, ...MsgChainObj[]];
         messageId: number;
     }[];
 }

@@ -1,5 +1,6 @@
 import type { MsgChainSend } from '.';
 import type { MsgChainObj } from '../event';
+import type { MsgSource } from '../event/MsgChainObj';
 import type { ReqResBase, ResponseBase, SessionReqBase } from './base';
 
 interface SendFriendMessageReq1 extends SessionReqBase {
@@ -77,7 +78,7 @@ export interface RoamingMessagesReq {
 }
 
 export interface RoamingMessagesRes extends ResponseBase {
-    data: MsgChainObj[];
+    data: [MsgSource, ...MsgChainObj[]];
 }
 
 export interface RoamingMessages extends ReqResBase<RoamingMessagesReq, RoamingMessagesRes> {}

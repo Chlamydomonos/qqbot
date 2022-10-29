@@ -1,5 +1,6 @@
 import type { MsgChainObj } from '.';
 import type { EventBase } from './base';
+import type { MsgSource } from './MsgChainObj';
 import type { Client, GroupMember, User } from './utils';
 
 export interface NewFriendRequestEvent extends EventBase {
@@ -47,5 +48,5 @@ export interface CommandExecutedEvent extends EventBase {
     name: string;
     friend?: User;
     member?: GroupMember;
-    args: MsgChainObj[];
+    args: [MsgSource, ...MsgChainObj[]];
 }

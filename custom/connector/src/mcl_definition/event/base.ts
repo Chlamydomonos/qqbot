@@ -1,4 +1,5 @@
 import type { MsgChainObj } from '.';
+import type { MsgSource } from './MsgChainObj';
 
 export interface MsgChainObjBase {
     type: string;
@@ -21,5 +22,5 @@ export interface FriendEventBase extends EventBase {
 }
 
 export interface MessageBase extends EventBase {
-    messageChain: MsgChainObj[];
+    messageChain: [MsgSource, ...MsgChainObj[]];
 }

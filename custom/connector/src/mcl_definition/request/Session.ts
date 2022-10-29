@@ -1,4 +1,5 @@
 import type { MsgChainObj } from '../event';
+import type { MsgSource } from '../event/MsgChainObj';
 import type { ReqResBase, ResponseBase, SessionReqBase } from './base';
 
 export interface VerifyReq {
@@ -28,8 +29,7 @@ export interface SessionInfoRes extends ResponseBase {
     };
 }
 
-export interface SessionInfo
-    extends ReqResBase<SessionReqBase, SessionInfoRes> {}
+export interface SessionInfo extends ReqResBase<SessionReqBase, SessionInfoRes> {}
 
 export interface ReleaseReq extends SessionReqBase {
     qq: number;
@@ -59,9 +59,8 @@ export interface MessageFormIdReq extends SessionReqBase {
 export interface MessageFormIdRes extends ResponseBase {
     data: {
         type: 'FriendMessage' | 'GroupMessage' | 'TempMessage' | string;
-        messageChain: MsgChainObj[];
+        messageChain: [MsgSource, ...MsgChainObj[]];
     };
 }
 
-export interface MessageFormId
-    extends ReqResBase<MessageFormIdReq, MessageFormIdRes> {}
+export interface MessageFormId extends ReqResBase<MessageFormIdReq, MessageFormIdRes> {}
