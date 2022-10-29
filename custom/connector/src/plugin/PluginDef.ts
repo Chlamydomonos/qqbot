@@ -103,7 +103,7 @@ interface PluginDef<
     privateMethods: PrivateMethods & ThisType<PluginThis<Name, Data, PublicMethods, PrivateMethods, Emits, Listens>>;
     emits: Emits;
     listens: Listens;
-    onLoad: () => void & ThisType<PluginThis<Name, Data, PublicMethods, PrivateMethods, Emits, Listens>>;
+    onLoad: () => void;
 }
 
 interface NotLoadedPlugin<Name extends string, PublicMethods extends MethodMap, Emits extends EmitMap> {
@@ -129,7 +129,8 @@ export function definePlugin<
     Emits extends EmitMap,
     Listens extends DefaultPluginAPI[]
 >(
-    def: PluginDef<Name, Data, PublicMethods, PrivateMethods, Emits, Listens>
+    def: PluginDef<Name, Data, PublicMethods, PrivateMethods, Emits, Listens> &
+        ThisType<PluginThis<Name, Data, PublicMethods, PrivateMethods, Emits, Listens>>
 ): Plugin<Name, PublicMethods, PrivateMethods> {
     return {
         loaded: false,
