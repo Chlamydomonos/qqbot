@@ -40,14 +40,26 @@ export default class ControlServer {
             app.eventEmitter.emit('control_server:error', { error: err });
         });
 
-        app.eventEmitter.on('control_server:data', (event, listenerData) => {
+        app.eventEmitter.on('control_server:data', async (event, listenerData) => {
             const data = event.data as string;
             listenerData.core = { read: true };
             if (/^\s*stop\s*$/.test(data)) {
                 listenerData.core.stoppingApp = true;
                 event.socket.write('Received stop request. Stopping app.');
                 app.stop();
+            } else {
+                const isAddPlugin = data.match(/^\s*addPlugin:([a-z]+)\s*$/);
+                if (isAddPlugin != null) {
+                    const result = await app.pluginLoader.add(isAddPlugin[1]);
+                    if (result) {
+                        event.socket.write('Added plugin.');
+                        console.log(`Added plugin ${isAddPlugin[1]}`);
+                    } else {
+                        event.socket.write('Cannot add plugin.');
+                    }
+                }
             }
+            return;
         });
 
         this.server.listen(8764);

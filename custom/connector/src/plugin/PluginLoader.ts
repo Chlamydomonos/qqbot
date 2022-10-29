@@ -20,7 +20,8 @@ export const EVENT_DICT = {
 };
 
 export default class PluginLoader {
-    private allPlugins = new Set<any>();
+    private pluginsFileName = '';
+    private allPlugins = new Map<string, any>();
     async load(pluginName: string): Promise<boolean> {
         try {
             console.log(`Loading plugin ${pluginName}...`);
@@ -43,7 +44,7 @@ export default class PluginLoader {
             realPlugin.onLoad = pluginDef.onLoad;
 
             realPlugin.onLoad();
-            this.allPlugins.add(realPlugin);
+            this.allPlugins.set(pluginName, realPlugin);
             app.eventEmitter.emit(`${pluginName}:start`, {});
             return true;
         } catch (e) {
@@ -53,7 +54,8 @@ export default class PluginLoader {
         }
     }
     async loadAll(pluginsFileName: string) {
-        return new Promise<void>((resolve, reject) => {
+        this.pluginsFileName = pluginsFileName;
+        return new Promise<void>((resolve) => {
             fs.readFile(pluginsFileName, async (err, data) => {
                 if (err != null) {
                     app.eventEmitter.emit('plugin_loader:error', { error: err });
@@ -75,6 +77,17 @@ export default class PluginLoader {
             });
         });
     }
+
+    unload(pluginName: string): boolean {
+        const plugin = this.allPlugins.get(pluginName);
+        if (plugin == null) {
+            return false;
+        }
+        app.eventEmitter.emit(`${pluginName}:stop`, {});
+        this.allPlugins.delete(pluginName);
+        return true;
+    }
+
     unloadAll() {
         this.allPlugins.forEach((value) => {
             const pluginName = value.name;
@@ -82,5 +95,48 @@ export default class PluginLoader {
             app.eventEmitter.emit(`${pluginName}:stop`, {});
         });
         this.allPlugins.clear();
+    }
+
+    async add(pluginName: string): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            fs.readFile(this.pluginsFileName, async (err, data) => {
+                if (err != null) {
+                    app.eventEmitter.emit('plugin_loader:error', { error: err });
+                    console.log('Failed to read plugin list');
+                    resolve(false);
+                    return;
+                }
+                if (data == null) {
+                    fs.writeFile(this.pluginsFileName, pluginName, async (err) => {
+                        if (err != null) {
+                            resolve(false);
+                        }
+                        try {
+                            this.load(pluginName);
+                        } catch (e) {
+                            resolve(false);
+                        }
+                        resolve(true);
+                        return;
+                    });
+                    return;
+                }
+                let dataStr = data.toString();
+                dataStr += `\n${pluginName}`;
+                fs.writeFile(this.pluginsFileName, dataStr, async (err) => {
+                    if (err != null) {
+                        resolve(false);
+                    }
+                    try {
+                        this.load(pluginName);
+                    } catch (e) {
+                        resolve(false);
+                    }
+                    resolve(true);
+                    return;
+                });
+                return;
+            });
+        });
     }
 }
