@@ -10,6 +10,8 @@ do
     npm install @chlamydbot/$line
 done < /app/files/plugin.txt
 
+npm update
+
 echo "Starting App..."
 
 node /app/dist/main.js &
