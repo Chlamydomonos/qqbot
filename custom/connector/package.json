@@ -1,6 +1,6 @@
 {
     "name": "@chlamydbot/core",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "description": "ChlamydBot的核心，用于插件开发的依赖",
     "main": "dist/index.js",
     "keywords": [],
