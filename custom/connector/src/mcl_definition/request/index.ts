@@ -41,6 +41,14 @@ import type {
     UnmuteAll,
 } from './Group';
 import type {
+    Recall,
+    RoamingMessages,
+    SendFriendMessage,
+    SendGroupMessage,
+    SendNudge,
+    SendTempMessage,
+} from './Message';
+import type {
     App,
     At,
     AtAll,
@@ -144,6 +152,12 @@ const API_DICT = {
     '/anno/list$GET': null as unknown as AnnoList,
     '/anno/publish$POST': null as unknown as AnnoPublish,
     '/anno/delete$POST': null as unknown as AnnoDelete,
+    '/sendFriendMessage$POST': null as unknown as SendFriendMessage,
+    '/sendGroupMessage$POST': null as unknown as SendGroupMessage,
+    '/sendTempMessage$POST': null as unknown as SendTempMessage,
+    '/sendNudge$POST': null as unknown as SendNudge,
+    '/recall$POST': null as unknown as Recall,
+    '/roamingMessages$POST': null as unknown as RoamingMessages,
 };
 
 export type Methods = 'GET' | 'POST' | 'POSTf';

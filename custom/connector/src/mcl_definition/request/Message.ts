@@ -11,11 +11,7 @@ export interface SendFriendMessageRes extends ResponseBase {
     messageId: number;
 }
 
-export interface SendFriendMessage
-    extends ReqResBase<SendFriendMessageReq, SendFriendMessageRes> {
-    path: '/sendFriendMessage';
-    method: 'POST';
-}
+export interface SendFriendMessage extends ReqResBase<SendFriendMessageReq, SendFriendMessageRes> {}
 
 export interface SendGroupMessageReq extends SessionReqBase {
     target: number;
@@ -26,11 +22,7 @@ export interface SendGroupMessageRes extends ResponseBase {
     messageId: number;
 }
 
-export interface SendGroupMessage
-    extends ReqResBase<SendGroupMessageReq, SendGroupMessageRes> {
-    path: '/sendGroupMessage';
-    method: 'POST';
-}
+export interface SendGroupMessage extends ReqResBase<SendGroupMessageReq, SendGroupMessageRes> {}
 
 export interface SendTempMessageReq extends SessionReqBase {
     qq: number;
@@ -42,11 +34,7 @@ export interface SendTempMessageRes extends ResponseBase {
     messageId: number;
 }
 
-export interface SendTempMessage
-    extends ReqResBase<SendTempMessageReq, SendTempMessageRes> {
-    path: '/sendTempMessage';
-    method: 'POST';
-}
+export interface SendTempMessage extends ReqResBase<SendTempMessageReq, SendTempMessageRes> {}
 
 export interface SendNudgeReq extends SessionReqBase {
     target: number;
@@ -54,20 +42,14 @@ export interface SendNudgeReq extends SessionReqBase {
     kind: 'Friend' | 'Group' | 'Stranger';
 }
 
-export interface SendNudge extends ReqResBase<SendNudgeReq, ResponseBase> {
-    path: '/sendNudge';
-    method: 'POST';
-}
+export interface SendNudge extends ReqResBase<SendNudgeReq, ResponseBase> {}
 
 export interface RecallReq extends SessionReqBase {
     target: number;
     messageId: number;
 }
 
-export interface Recall extends ReqResBase<RecallReq, ResponseBase> {
-    path: '/recall';
-    method: 'POST';
-}
+export interface Recall extends ReqResBase<RecallReq, ResponseBase> {}
 
 export interface RoamingMessagesReq {
     timeStart: number;
@@ -79,8 +61,4 @@ export interface RoamingMessagesRes extends ResponseBase {
     data: MsgChainObj[];
 }
 
-export interface RoamingMessages
-    extends ReqResBase<RoamingMessagesReq, RoamingMessagesRes> {
-    path: '/roamingMessages';
-    method: 'POST';
-}
+export interface RoamingMessages extends ReqResBase<RoamingMessagesReq, RoamingMessagesRes> {}
