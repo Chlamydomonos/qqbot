@@ -6,7 +6,7 @@ chmod 666 /origin/package.json
 echo "Installing plugins..."
 while read line
 do
-    echo `Installing plugin $line...`
+    echo "Installing plugin $line..."
     npm install @chlamydbot/$line
 done < /app/files/plugin.txt
 
