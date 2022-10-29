@@ -12,7 +12,7 @@ const APP_FILES_ROOT = '/app/files';
 export class App {
     mclWsClient: MclWSClient;
     mclHttpClient: HTTPClient = MclHTTPClient;
-    eventEmitter: IGlobalEventEmitter;
+    eventEmitter: GlobalEventEmitter;
     pluginLoader: PluginLoader;
     controlServer: ControlServer;
     constructor() {
@@ -23,6 +23,9 @@ export class App {
     }
 
     async start() {
+        console.log('Starting global event emitter...');
+        this.eventEmitter.start();
+
         console.log('Starting control server...');
         this.controlServer.start();
 
