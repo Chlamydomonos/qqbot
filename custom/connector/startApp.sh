@@ -1,6 +1,7 @@
 #!/bin/bash
 rm /origin/package.json
 cp /app/package.json /origin
+chmod 666 /origin/package.json
 
 echo "Installing plugins..."
 while read line
