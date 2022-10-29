@@ -2,10 +2,14 @@
 rm /origin/package.json
 cp /app/package.json /origin
 
-while read -r line
+echo "Installing plugins..."
+while read line
 do
-   npm install @chlamydbot/$line
+    echo `Installing plugin $line...`
+    npm install @chlamydbot/$line
 done < /app/files/plugin.txt
+
+echo "Starting App..."
 
 node /app/dist/main.js &
 pid="$!"

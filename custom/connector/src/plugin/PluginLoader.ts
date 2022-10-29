@@ -71,9 +71,12 @@ export default class PluginLoader {
                 const dataStr = data.toString();
                 const names = dataStr.split('\n');
                 for (let i = 0; i < names.length; i++) {
-                    await this.load(names[i]);
+                    if(!names[i].match('/^\s*$/')) {
+                        await this.load(names[i]);
+                    }
                 }
                 resolve();
+                return;
             });
         });
     }
@@ -107,7 +110,7 @@ export default class PluginLoader {
                     return;
                 }
                 if (data == null) {
-                    fs.writeFile(this.pluginsFileName, pluginName, async (err) => {
+                    fs.writeFile(this.pluginsFileName, pluginName + '\n', async (err) => {
                         if (err != null) {
                             resolve(false);
                         }
@@ -122,7 +125,7 @@ export default class PluginLoader {
                     return;
                 }
                 let dataStr = data.toString();
-                dataStr += `\n${pluginName}`;
+                dataStr += `${pluginName}\n`;
                 fs.writeFile(this.pluginsFileName, dataStr, async (err) => {
                     if (err != null) {
                         resolve(false);
