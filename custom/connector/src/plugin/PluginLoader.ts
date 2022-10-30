@@ -1,7 +1,19 @@
 import app from '../app';
 import fs from 'fs';
+import type { Attributes, Model, ModelAttributes, ModelStatic } from 'sequelize';
+
+class PluginDB {
+    constructor(public plugin: any) {}
+    define<M extends Model<any, any>, TAttributes = Attributes<M>>(
+        modelName: string,
+        attributes: ModelAttributes<M, TAttributes>
+    ): ModelStatic<M> {
+        return app.dbConnector.define(`${this.plugin.name}\$${modelName}`, attributes);
+    }
+}
 class PluginTemplate {
     httpClient = app.mclHttpClient;
+    db = new PluginDB(this);
     on(eventName: string, listener: (event: any, listenerData?: Record<string, any>) => void) {
         app.eventEmitter.on(eventName, listener);
         return this;

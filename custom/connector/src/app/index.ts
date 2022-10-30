@@ -1,3 +1,4 @@
+import DBConnector from '../db/DBConnector';
 import GlobalEventEmitter from '../event/GlobalEventEmitter';
 import { MCL_WS_URL, QQ, VERIFY_KEY } from '../mcl_definition';
 import PluginLoader from '../plugin/PluginLoader';
@@ -16,12 +17,14 @@ export class App {
     pluginLoader: PluginLoader;
     controlServer: ControlServer;
     pluginController: PluginController;
+    dbConnector: DBConnector;
     constructor() {
         this.mclWsClient = new MclWSClient(MCL_WS_URL);
         this.eventEmitter = new GlobalEventEmitter();
         this.pluginLoader = new PluginLoader();
         this.controlServer = new ControlServer();
         this.pluginController = new PluginController();
+        this.dbConnector = new DBConnector();
     }
 
     async start() {
@@ -53,6 +56,9 @@ export class App {
             this.stop();
         }
 
+        console.log('Starting DB connector...');
+        await this.dbConnector.start();
+
         console.log('Loading plugins...');
         await this.pluginLoader.loadAll(`${APP_FILES_ROOT}/plugin.txt`);
 
@@ -63,6 +69,9 @@ export class App {
     async stop() {
         console.log('Unloading plugins...');
         await this.pluginLoader.unloadAll();
+
+        console.log('Stopping db connector...');
+        await this.dbConnector.stop();
 
         console.log('Stopping mcl http client...');
         this.mclHttpClient.send('/release', { sessionKey: this.mclHttpClient.sessionKey, qq: parseInt(QQ) });

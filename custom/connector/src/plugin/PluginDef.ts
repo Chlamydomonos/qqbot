@@ -3,6 +3,7 @@ import type { EVENT_DICT as MCL_WS_EVENT_DICT } from '../app/mcl/WSClient';
 import type { EVENT_DICT as MCL_HTTP_EVENT_DICT, IHttpClient } from '../app/mcl/HTTPClient';
 import type { EVENT_DICT as PLUGIN_LOADER_EVENT_DICT } from './PluginLoader';
 import type { EVENT_DICT as CONTROL_SERVER_EVENT_DICT } from '../app/control/ControlServer';
+import type { Attributes, Model, ModelAttributes, ModelStatic } from 'sequelize';
 
 type DataMap = Record<string, any>;
 type MethodMap = Record<string, (...args: any[]) => any>;
@@ -55,6 +56,13 @@ type AllEventsDict<Name extends string, Emits extends EmitMap, Listens extends D
     DefaultEmits<Name> &
     DependenciesEmitMap<Listens>;
 
+export interface PluginDB {
+    define<M extends Model<any, any>, TAttributes = Attributes<M>>(
+        modelName: string,
+        attributes: ModelAttributes<M, TAttributes>
+    ): ModelStatic<M>;
+}
+
 interface PluginBase<Name extends string, Emits extends EmitMap, Listens extends DefaultPluginAPI[]> {
     httpClient: IHttpClient;
     on<T extends keyof AllEventsDict<Name, Emits, Listens>>(
@@ -65,6 +73,7 @@ interface PluginBase<Name extends string, Emits extends EmitMap, Listens extends
     name: Name;
     emits: Emits;
     listens: Listens;
+    db: PluginDB;
 }
 
 type PluginThis<
