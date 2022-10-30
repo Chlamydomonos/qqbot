@@ -71,7 +71,7 @@ export default class PluginLoader {
                 const dataStr = data.toString();
                 const names = dataStr.split('\n');
                 for (let i = 0; i < names.length; i++) {
-                    if (!names[i].match('/^s*$/')) {
+                    if (!names[i].match(/^s*$/)) {
                         await this.load(names[i]);
                     }
                 }
@@ -79,16 +79,6 @@ export default class PluginLoader {
                 return;
             });
         });
-    }
-
-    unload(pluginName: string): boolean {
-        const plugin = this.allPlugins.get(pluginName);
-        if (plugin == null) {
-            return false;
-        }
-        app.eventEmitter.emit(`${pluginName}:stop`, {});
-        this.allPlugins.delete(pluginName);
-        return true;
     }
 
     unloadAll() {
@@ -100,7 +90,7 @@ export default class PluginLoader {
         this.allPlugins.clear();
     }
 
-    async loadNew(pluginName: string): Promise<boolean> {
+    async add(pluginName: string) {
         return new Promise<boolean>((resolve) => {
             fs.readFile(this.pluginsFileName, async (err, data) => {
                 if (err != null) {
@@ -109,37 +99,87 @@ export default class PluginLoader {
                     resolve(false);
                     return;
                 }
+                let dataStr: string;
                 if (data == null) {
-                    fs.writeFile(this.pluginsFileName, pluginName + '\n', async (err) => {
-                        if (err != null) {
-                            resolve(false);
-                        }
-                        try {
-                            this.load(pluginName);
-                        } catch (e) {
-                            resolve(false);
-                        }
-                        resolve(true);
-                        return;
-                    });
-                    return;
+                    dataStr = '';
+                } else {
+                    dataStr = data.toString();
                 }
-                let dataStr = data.toString();
-                dataStr += `${pluginName}\n`;
-                fs.writeFile(this.pluginsFileName, dataStr, async (err) => {
+                dataStr += `\n${pluginName}`;
+                fs.writeFile(this.pluginsFileName, dataStr, (err) => {
                     if (err != null) {
+                        app.eventEmitter.emit('plugin_loader:error', { error: err });
+                        console.log(`Failed to write plugin list`);
                         resolve(false);
+                        return;
                     }
-                    try {
-                        this.load(pluginName);
-                    } catch (e) {
-                        resolve(false);
-                    }
-                    resolve(true);
-                    return;
                 });
+                resolve(true);
                 return;
             });
         });
+    }
+
+    async remove(pluginName: string) {
+        return new Promise<boolean>((resolve) => {
+            fs.readFile(this.pluginsFileName, async (err, data) => {
+                if (err != null) {
+                    app.eventEmitter.emit('plugin_loader:error', { error: err });
+                    console.log('Failed to read plugin list');
+                    resolve(false);
+                    return;
+                }
+                let dataStr: string;
+                if (data == null) {
+                    dataStr = '';
+                } else {
+                    dataStr = data.toString();
+                }
+
+                const names = new Set(...dataStr.split('\n'));
+                names.delete(pluginName);
+                dataStr = '';
+                names.forEach((name) => {
+                    dataStr += `${name}\n`;
+                });
+
+                fs.writeFile(this.pluginsFileName, dataStr, (err) => {
+                    if (err != null) {
+                        app.eventEmitter.emit('plugin_loader:error', { error: err });
+                        console.log(`Failed to write plugin list`);
+                        resolve(false);
+                        return;
+                    }
+                });
+                resolve(true);
+                return;
+            });
+        });
+    }
+
+    async list() {
+        return new Promise<string[]>((resolve, reject) => {
+            fs.readFile(this.pluginsFileName, async (err, data) => {
+                if (err != null) {
+                    app.eventEmitter.emit('plugin_loader:error', { error: err });
+                    console.log('Failed to read plugin list');
+                    reject(err);
+                    return;
+                }
+                let dataStr: string;
+                if (data == null) {
+                    dataStr = '';
+                } else {
+                    dataStr = data.toString();
+                }
+
+                resolve(dataStr.split('\n'));
+                return;
+            });
+        });
+    }
+
+    listLoaded() {
+        return [...this.allPlugins.keys()];
     }
 }

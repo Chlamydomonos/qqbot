@@ -1,8 +1,8 @@
-import type { IGlobalEventEmitter } from '../event/GlobalEventEmitter';
 import GlobalEventEmitter from '../event/GlobalEventEmitter';
 import { MCL_WS_URL, QQ, VERIFY_KEY } from '../mcl_definition';
 import PluginLoader from '../plugin/PluginLoader';
 import ControlServer from './control/ControlServer';
+import PluginController from './control/PluginController';
 import type { HTTPClient } from './mcl/HTTPClient';
 import MclHTTPClient from './mcl/HTTPClient';
 import MclWSClient from './mcl/WSClient';
@@ -15,11 +15,13 @@ export class App {
     eventEmitter: GlobalEventEmitter;
     pluginLoader: PluginLoader;
     controlServer: ControlServer;
+    pluginController: PluginController;
     constructor() {
         this.mclWsClient = new MclWSClient(MCL_WS_URL);
         this.eventEmitter = new GlobalEventEmitter();
         this.pluginLoader = new PluginLoader();
         this.controlServer = new ControlServer();
+        this.pluginController = new PluginController();
     }
 
     async start() {
@@ -53,6 +55,9 @@ export class App {
 
         console.log('Loading plugins...');
         await this.pluginLoader.loadAll(`${APP_FILES_ROOT}/plugin.txt`);
+
+        console.log('Starting plugin controller...');
+        this.pluginController.start();
     }
 
     async stop() {

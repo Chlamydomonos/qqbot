@@ -18,6 +18,8 @@ services:
         command: [ 'bash', './startApp.sh' ]
         networks:
             - mirai_net
+        expose:
+            - 8764
         volumes:
             - ./custom/connector/logs:/root/.npm/_logs
             - ./custom/connector:/origin

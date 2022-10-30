@@ -42,7 +42,9 @@ export default class ControlServer {
 
         app.eventEmitter.on('control_server:data', async (event, listenerData) => {
             const data = event.data as string;
-            listenerData.core = { read: true };
+            if (!listenerData.core) {
+                listenerData.core = { read: true };
+            }
             if (/^\s*stop\s*$/.test(data)) {
                 listenerData.core.stoppingApp = true;
                 event.socket.write('Received stop request. Stopping app.');
