@@ -117,7 +117,7 @@ export default class PluginLoader {
                 } else {
                     dataStr = data.toString();
                 }
-                dataStr += `\n${pluginName}`;
+                dataStr += `${pluginName}\n`;
                 fs.writeFile(this.pluginsFileName, dataStr, (err) => {
                     if (err != null) {
                         app.eventEmitter.emit('plugin_loader:error', { error: err });
