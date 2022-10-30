@@ -18,6 +18,7 @@ services:
         command: [ 'bash', './startApp.sh' ]
         networks:
             - mirai_net
+            - db_net
         expose:
             - 8764
         volumes:
@@ -38,7 +39,26 @@ services:
             - "./custom/connector_npm_repo/storage:/verdaccio/storage"
             - "./custom/connector_npm_repo/conf:/verdaccio/conf"
             - "./custom/connector_npm_repo/plugins:/verdaccio/plugins"
-
+    db:
+        container_name: db
+        restart: always
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_DATABASE=qqbot
+            - TZ=Asia/Shanghai
+        command:
+            [
+                "mysqld",
+                "--character-set-server=utf8mb4",
+                "--collation-server=utf8mb4_unicode_ci"
+            ]
+        expose:
+            - 3306
+        networks:
+            - db_net
 networks:
     mirai_net:
+        driver: bridge
+    db_net:
         driver: bridge
