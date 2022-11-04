@@ -13,6 +13,7 @@ class PluginDB {
 }
 class PluginTemplate {
     httpClient = app.mclHttpClient;
+    pluginLoader = app.pluginLoader;
     db = new PluginDB(this);
     on(eventName: string, listener: (event: any, listenerData?: Record<string, any>) => void) {
         app.eventEmitter.on(eventName, listener);
@@ -27,16 +28,29 @@ interface PluginLoaderErrorEvent {
     error: any;
 }
 
+interface PluginLoadEvent {
+    plugin: string;
+}
+
 export const EVENT_DICT = {
     'plugin_loader:error': null as unknown as PluginLoaderErrorEvent,
+    'plugin_loader:load': null as unknown as PluginLoadEvent,
+    'plugin_loader:add': null as unknown as PluginLoadEvent,
+    'plugin_loader:remove': null as unknown as PluginLoadEvent,
 };
 
-export default class PluginLoader {
+export interface IPluginLoader {
+    list(): Promise<string[]>;
+    listLoaded(): string[];
+}
+
+export default class PluginLoader implements IPluginLoader {
     private pluginsFileName = '';
     private allPlugins = new Map<string, any>();
     async load(pluginName: string): Promise<boolean> {
         try {
             console.log(`Loading plugin ${pluginName}...`);
+            app.eventEmitter.emit('plugin_loader:load', { plugin: pluginName });
             const pluginImport = await import(`@chlamydbot/${pluginName}`);
             const pluginDef = pluginImport.default.$toLoad;
             const realPlugin: any = new PluginTemplate();
@@ -126,6 +140,8 @@ export default class PluginLoader {
                         return;
                     }
                 });
+
+                app.eventEmitter.emit('plugin_loader:add', { plugin: pluginName });
                 resolve(true);
                 return;
             });
@@ -163,6 +179,8 @@ export default class PluginLoader {
                         return;
                     }
                 });
+
+                app.eventEmitter.emit('plugin_loader:remove', { plugin: pluginName });
                 resolve(true);
                 return;
             });

@@ -1,7 +1,7 @@
 import type { EVENT_DICT as MCL_EVENT_DICT } from '../mcl_definition';
 import type { EVENT_DICT as MCL_WS_EVENT_DICT } from '../app/mcl/WSClient';
 import type { EVENT_DICT as MCL_HTTP_EVENT_DICT, IHttpClient } from '../app/mcl/HTTPClient';
-import type { EVENT_DICT as PLUGIN_LOADER_EVENT_DICT } from './PluginLoader';
+import type { EVENT_DICT as PLUGIN_LOADER_EVENT_DICT, IPluginLoader } from './PluginLoader';
 import type { EVENT_DICT as CONTROL_SERVER_EVENT_DICT } from '../app/control/ControlServer';
 import type { Attributes, Model, ModelAttributes, ModelStatic } from 'sequelize';
 
@@ -65,15 +65,17 @@ export interface PluginDB {
 
 interface PluginBase<Name extends string, Emits extends EmitMap, Listens extends DefaultPluginAPI[]> {
     httpClient: IHttpClient;
+    pluginLoader: IPluginLoader;
+    db: PluginDB;
     on<T extends keyof AllEventsDict<Name, Emits, Listens>>(
         eventName: T,
         listener: (event: AllEventsDict<Name, Emits, Listens>[T], listenerData?: Record<string, any>) => void
     ): this;
+    on(eventName: string, listener: (event: any, listenerData?: Record<string, any>) => void): this;
     emit<T extends keyof Emits>(eventName: T, event: Emits[T]): boolean;
     name: Name;
     emits: Emits;
     listens: Listens;
-    db: PluginDB;
 }
 
 type PluginThis<
