@@ -30,6 +30,8 @@ type DefaultEmitMap = {
     ':start': {};
     ':stop': {};
     ':error': { error: unknown };
+    ':request': { data: unknown };
+    ':error_request': {};
 };
 
 type DefaultEmits<Name extends string> = addPrefixToObject<DefaultEmitMap, Name>;

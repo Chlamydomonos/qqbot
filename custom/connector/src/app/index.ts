@@ -4,6 +4,7 @@ import { MCL_WS_URL, QQ, VERIFY_KEY } from '../mcl_definition';
 import PluginLoader from '../plugin/PluginLoader';
 import ControlServer from './control/ControlServer';
 import PluginController from './control/PluginController';
+import PluginSender from './control/PluginSender';
 import type { HTTPClient } from './mcl/HTTPClient';
 import MclHTTPClient from './mcl/HTTPClient';
 import MclWSClient from './mcl/WSClient';
@@ -12,19 +13,22 @@ const APP_FILES_ROOT = '/app/files';
 
 export class App {
     mclWsClient: MclWSClient;
-    mclHttpClient: HTTPClient = MclHTTPClient;
+    mclHttpClient: HTTPClient;
     eventEmitter: GlobalEventEmitter;
     pluginLoader: PluginLoader;
     controlServer: ControlServer;
     pluginController: PluginController;
     dbConnector: DBConnector;
+    pluginSender: PluginSender;
     constructor() {
         this.mclWsClient = new MclWSClient(MCL_WS_URL);
+        this.mclHttpClient = MclHTTPClient;
         this.eventEmitter = new GlobalEventEmitter();
         this.pluginLoader = new PluginLoader();
         this.controlServer = new ControlServer();
         this.pluginController = new PluginController();
         this.dbConnector = new DBConnector();
+        this.pluginSender = new PluginSender();
     }
 
     async start() {
@@ -64,6 +68,9 @@ export class App {
 
         console.log('Starting plugin controller...');
         this.pluginController.start();
+
+        console.log('Starting plugin sender...');
+        this.pluginSender.start();
     }
 
     async stop() {
