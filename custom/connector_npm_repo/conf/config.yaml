@@ -29,12 +29,15 @@ security:
 uplinks:
     npmjs:
         url: https://registry.npmjs.org/
+        cache: false
     yarn:
         url: https://registry.yarnpkg.com/
         timeout: 10s
+        cache: false
     taobao:
         url: https://npmmirror.com/
         timeout: 10s
+        cache: false
 
 packages:
     "@chlamydbot/*":

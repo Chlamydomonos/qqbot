@@ -30,7 +30,7 @@ type DefaultEmitMap = {
     ':start': {};
     ':stop': {};
     ':error': { error: unknown };
-    ':request': { data: unknown };
+    ':request': { data: unknown; respond: (res: Record<string, any>) => void };
     ':error_request': {};
 };
 

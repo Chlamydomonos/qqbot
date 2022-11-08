@@ -7,14 +7,19 @@ export default class PluginSender {
             if (!listenerData.core) {
                 listenerData.core = { read: true };
             }
-            const matchResult = data.match(/^\s*toPlugin\s+([a-z]+)\s+(.+)$/);
+            const matchResult = data.match(/^\s*toPlugin\s+([a-z]+)\s+(\{.*\})$/);
             if (matchResult) {
                 listenerData.core.sendingToPlugin = true;
                 const pluginName = matchResult[0];
                 let pluginData: any = null;
                 try {
                     pluginData = JSON.parse(matchResult[1]);
-                    app.eventEmitter.emit(`${pluginName}:request`, { data: pluginData });
+                    let response: any = {};
+                    function respond(res: any) {
+                        response = res;
+                    }
+                    app.eventEmitter.emit(`${pluginName}:request`, { data: pluginData, respond: respond });
+                    event.socket.write(JSON.stringify(response));
                 } catch (e) {
                     app.eventEmitter.emit(`${pluginName}:error_request`, {});
                 }

@@ -19,6 +19,7 @@ services:
         networks:
             - mirai_net
             - db_net
+            - backend_net
         expose:
             - 8764
         volumes:
@@ -57,8 +58,27 @@ services:
             - 3306
         networks:
             - db_net
+    backend:
+        container_name: backend
+        restart: always
+        build: ./custom/backend
+        command:
+            [
+                'gunicorn',
+                '-w',
+                '4',
+                '-b',
+                '0.0.0.0:5000',
+                'main:app'
+            ]
+        ports:
+            - "8702:5000"
+        networks:
+            - backend_net
 networks:
     mirai_net:
         driver: bridge
     db_net:
+        driver: bridge
+    backend_net:
         driver: bridge
