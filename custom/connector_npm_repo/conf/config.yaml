@@ -8,6 +8,7 @@ web:
     pkgManagers:
         - npm
         - yarn
+        - pnpm
     html_cache: true
     showFooter: false
 auth:
